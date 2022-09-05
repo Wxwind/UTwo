@@ -1,14 +1,14 @@
-﻿namespace Wx.MyMVVM
+﻿namespace Wx.UTwo.Core
 {
     /// <summary>
-    /// T发生变化时自动调用事件
+    /// 监听T并自动调用事件OnValueChanged
     /// </summary>
     /// <typeparam name="T">要监听的对象类型</typeparam>
     public class BindablePropery<T>
     {
         public delegate void OnValueChangedEventHandler(T oldValue, T newValue);
 
-        public event OnValueChangedEventHandler OnValueChanged;
+        private event OnValueChangedEventHandler OnValueChanged;
         private T m_value;
 
         public T Value
@@ -26,15 +26,15 @@
         /// <summary>
         /// 用于model变化时去通知view
         /// </summary>
-        /// <param name="OnValueChangedCallBack"></param>
-        public void AddListener(OnValueChangedEventHandler OnValueChangedCallBack)
+        /// <param name="onValueChangedCallBack"></param>
+        public void AddListener(OnValueChangedEventHandler onValueChangedCallBack)
         {
-            OnValueChanged += OnValueChangedCallBack;
+            OnValueChanged += onValueChangedCallBack;
         }
 
-        public void RemoveListener(OnValueChangedEventHandler OnValueChangedCallBack)
+        public void RemoveListener(OnValueChangedEventHandler onValueChangedCallBack)
         {
-            OnValueChanged -= OnValueChangedCallBack;
+            OnValueChanged -= onValueChangedCallBack;
         }
 
         public override string ToString()

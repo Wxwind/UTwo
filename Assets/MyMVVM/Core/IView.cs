@@ -1,4 +1,4 @@
-﻿namespace Wx.MyMVVM
+﻿namespace Wx.UTwo.Core
 {
     public interface IView
     {
@@ -8,6 +8,6 @@
 
         void OnClose();
 
-        void OnDestory();
+        void OnDestroySelf();
     }
 }

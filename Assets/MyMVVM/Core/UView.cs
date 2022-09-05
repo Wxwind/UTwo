@@ -1,25 +1,35 @@
-﻿using System.Reflection;
+﻿
+using UnityEngine;
 
-namespace Wx.MyMVVM
+namespace Wx.UTwo.Core
 {
-    public abstract class UView<T> : IView where T : UViewModel
+    public abstract class UView<T> : MonoBehaviour, IView where T : IModel
     {
-        
-        protected T m_viewModel;
+        private bool m_isHasBind=false;
+        private T m_model;
 
         /// <summary>
-        /// 记录当前绑定的viewModel，view会自动重新绑定新的viewMovel
+        /// <para>记录当前绑定的model，view会自动重新绑定新的Model</para>
+        /// <para>请先绑定View的属性至Model(Type)，最后绑定此BindingModel(实例)</para>
         /// </summary>
-        public T BindingViewModel
+        public T BindingModel
         {
-            get => m_viewModel;
+            get
+            {
+                if (m_model is null)
+                {
+                    LogHelper.LogError($"the BindingModel in view \"{GetType().Name}\" in \"{gameObject.name}\" hasn't bind any model");
+                }
+
+                return m_model;
+            }
             set
             {
-                if (Equals(m_viewModel, value)) return;
-                T oldValue = m_viewModel;
-                m_viewModel = value;
-                m_allPropertyBinder.UnBindToVM(oldValue);
-                m_allPropertyBinder.BindToVM(value);
+                if (Equals(m_model, value)) return;
+                T oldValue = m_model;
+                m_model = value;
+                m_allPropertyBinder.UnBindToModel(oldValue);
+                m_allPropertyBinder.BindToModel(value);
             }
         }
 
@@ -28,51 +38,14 @@ namespace Wx.MyMVVM
         /// </summary>
         protected readonly PropertyBinder<T> m_allPropertyBinder = new PropertyBinder<T>();
 
-        public virtual void OnInit()
-        {
-            Log.LogInfo($"init {GetType()}");
-        }
-
-        public virtual void OnOpen()
-        {
-            Log.LogInfo($"open {GetType()}");
-        }
-
-        public virtual void OnClose()
-        {
-            Log.LogInfo($"close {GetType()}");
-        }
-
-        public virtual void OnDestory()
-        {
-            Log.LogInfo($"destory {GetType()}");
-        }
+        /// <summary>
+        /// 初始化View将其属性绑定到Model(Type)上
+        /// </summary>
+        public abstract void OnInit();
+        public abstract void OnOpen();
+        public abstract void OnClose();
+        public abstract void OnDestroySelf();
     }
 
-    public class PropertyBinder<T> where T : UViewModel
-    {
-        public delegate void BindEventHandler(T viewModel);
-
-        public delegate void UnBindEventHandler(T viewModel);
-
-        public event BindEventHandler OnBinds;
-        public event UnBindEventHandler OnUnBinds;
-
-        
-        public void RigisterProperty<TProperty>(string propertyName,BindablePropery<TProperty>.OnValueChangedEventHandler OnValueChanged)
-        {
-            OnBinds += (viewModel) => { };
-            OnUnBinds += (viewModel) => { };
-        }
-
-        public void BindToVM(T viewModel)
-        {
-            OnBinds?.Invoke(viewModel);
-        }
-
-        public void UnBindToVM(T viewModel)
-        {
-            OnUnBinds?.Invoke(viewModel);
-        }
-    }
+   
 }
