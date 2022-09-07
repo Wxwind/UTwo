@@ -25,7 +25,7 @@ namespace Wx.UTwo.Core
         /// <typeparam name="TProperty">view要绑定的字段类型</typeparam>
         /// <returns>绑定成功则返回True，否则返回False</returns>
         /// <exception cref="ArgumentException">绑定的类型错误</exception>
-        public bool RigisterField<TProperty>(string fieldName,
+        public bool RegisterField<TProperty>(string fieldName,
             BindablePropery<TProperty>.OnValueChangedEventHandler OnValueChanged, bool isWeakBind = false)
         {
             var fieldInfo = typeof(T).GetField(fieldName,
@@ -33,7 +33,7 @@ namespace Wx.UTwo.Core
             if (fieldInfo is null)
             {
                 if (isWeakBind) return false;
-                throw new ArgumentException($"counld't find field \"{fieldName}\" in Model \"{typeof(T)}\"");
+                throw new Exception($"counld't find field \"{fieldName}\"(Type: {typeof(TProperty)}) in Model \"{typeof(T)}\"");
             }
 
             OnBinds += (model) =>
@@ -52,20 +52,22 @@ namespace Wx.UTwo.Core
                 throw new Exception("not exist this exception in theory");
             }
 
+            //绑定的model属性匹配成功
             if (field is BindablePropery<TProperty> f)
             {
                 return f;
             }
 
+            //
             string msg =
-                $"the type \"{typeof(TProperty)}\" you want to bind doesn't match type {field.GetType()} of field \"{fieldName}\" in Model \"{typeof(T)}\",check your code please";
+                $"\"V2M：<color=#ff0000>{fieldName}</color>\":the type <color=#ff0000>{typeof(TProperty)}</color> you want to bind doesn't match type <color=#ff0000>{field.GetType()}</color> in Model \"<color=#ff0000>{typeof(T)}</color>\",check your code please";
             if (isWeakBind)
             {
                 LogHelper.LogWarning(msg);
                 return null;
             }
 
-            throw new ArgumentException(msg);
+            throw new Exception(msg);
         }
 
         public void BindToModel(T model)

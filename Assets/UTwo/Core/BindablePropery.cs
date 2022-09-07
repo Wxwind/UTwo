@@ -3,7 +3,7 @@
     /// <summary>
     /// 监听T并自动调用事件OnValueChanged
     /// </summary>
-    /// <typeparam name="T">要监听的对象类型</typeparam>
+    /// <typeparam name="T">要监听的字段类型</typeparam>
     public class BindablePropery<T>
     {
         public delegate void OnValueChangedEventHandler(T oldValue, T newValue);

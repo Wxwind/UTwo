@@ -3,35 +3,34 @@ using Wx.UTwo.Core;
 
 namespace MyMVVM.Sample
 {
-    public class TestView : UView<TestModel>
+    public class CharacterView : UView<CharacterModel>
     {
         public TMP_Text MyString;
         public TMP_Text Num;
         public TMP_InputField InputField;
 
-        public TestModel testModel;
-
-        private void Awake()
-        {
-        }
-
+        private CharacterModel testModel;
+        
         private void Start()
         {
             OnInit();
+            testModel = new CharacterModel();
             BindingModel = testModel;
+            LogHelper.LogInfo("Bind to a new CharacterModel");
+            testModel.Set("I'm Character",-1);
         }
 
         public override void OnInit()
         {
             LogHelper.LogInfo($"init {GetType()}");
             
-            m_allPropertyBinder.RigisterField<string>("bp_text",
+            m_allPropertyBinder.RegisterField<string>("bp_text",
                 (oldValue, newValue) =>
                 {
                     MyString.text = newValue;
                     LogHelper.LogInfo("View 的 MyString 随Model发生改变");
                 });
-            m_allPropertyBinder.RigisterField<int>("bp_num",
+            m_allPropertyBinder.RegisterField<int>("bp_num",
                 (oldValue, newValue) =>
                 {
                     LogHelper.LogInfo("Model 的 bp_num+1 ");

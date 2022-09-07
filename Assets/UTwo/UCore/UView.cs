@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Wx.UTwo.Core
 {
+    //一个View只能对应一个Model
     public abstract class UView<T> : MonoBehaviour, IView where T : IModel
     {
-        private bool m_isHasBind=false;
         private T m_model;
 
         /// <summary>
