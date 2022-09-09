@@ -10,20 +10,13 @@ namespace Wx.UTwo.Core
     {
         private Dictionary<string, PureModel> m_models = new Dictionary<string, PureModel>();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="models">要监听的Models</param>
-        public ViewModel(params PureModel[] models)
+        public ViewModel()
         {
-            foreach (var m in models)
-            {
-                m_models.Add(m.GetType().ToString(), m);
-            }
+            
         }
 
-        public bool RegisterField<TProperty>(string modelTypeName, string modelFieldName,
-            BindablePropery<TProperty>.OnValueChangedEventHandler OnValueChanged)
+        protected bool RegisterField<TProperty>(string modelTypeName, string modelFieldName,
+            ReactivePropery<TProperty>.OnValueChangedEventHandler OnValueChanged)
         {
             if (m_models.TryGetValue(modelTypeName, out var model))
             {
@@ -36,7 +29,7 @@ namespace Wx.UTwo.Core
                 }
 
                 var field = fieldInfo.GetValue(model);
-                if (field is BindablePropery<TProperty> f)
+                if (field is ReactivePropery<TProperty> f)
                 {
                     f.AddListener(OnValueChanged);
                     return true;
@@ -49,7 +42,11 @@ namespace Wx.UTwo.Core
             throw new Exception($"Coundn't find model named \"{modelTypeName}\",Are you missing import in ctor() or typo error?");
         }
 
-        public bool BindToModels(params PureModel[] models)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="models">要监听的Models</param>
+        protected bool BindToModels(params PureModel[] models)
         {
             if (m_models.Count!=0)
             {

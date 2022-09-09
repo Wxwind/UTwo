@@ -26,7 +26,7 @@ namespace Wx.UTwo.Core
         /// <returns>绑定成功则返回True，否则返回False</returns>
         /// <exception cref="ArgumentException">绑定的类型错误</exception>
         public bool RegisterField<TProperty>(string fieldName,
-            BindablePropery<TProperty>.OnValueChangedEventHandler OnValueChanged, bool isWeakBind = false)
+            ReactivePropery<TProperty>.OnValueChangedEventHandler OnValueChanged, bool isWeakBind = false)
         {
             var fieldInfo = typeof(T).GetField(fieldName,
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
@@ -43,7 +43,7 @@ namespace Wx.UTwo.Core
             return true;
         }
 
-        private BindablePropery<TProperty> FetchFieldInModel<TProperty>(string fieldName, T model, FieldInfo fieldInfo,
+        private ReactivePropery<TProperty> FetchFieldInModel<TProperty>(string fieldName, T model, FieldInfo fieldInfo,
             bool isWeakBind)
         {
             var field = fieldInfo.GetValue(model);
@@ -53,7 +53,7 @@ namespace Wx.UTwo.Core
             }
 
             //绑定的model属性匹配成功
-            if (field is BindablePropery<TProperty> f)
+            if (field is ReactivePropery<TProperty> f)
             {
                 return f;
             }

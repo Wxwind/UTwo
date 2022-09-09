@@ -4,7 +4,30 @@ namespace UTwo.Samples.View2MultiModel
 {
     public class BattleInfoVM:ViewModel
     {
-        public BindablePropery<string> bp_enemyInfo=new BindablePropery<string>();
-        public BindablePropery<string> bp_roleInfo=new BindablePropery<string>();
+        public ReactivePropery<string> bp_enemyInfo=new ReactivePropery<string>();
+        public ReactivePropery<string> bp_roleInfo=new ReactivePropery<string>();
+
+        public BattleInfoVM(EnemyModel enemyModel,RoleModel roleModel)
+        {
+            BindToModels(enemyModel, roleModel);
+            RegisterAllFields();
+        }
+
+        public bool BindToModels(EnemyModel enemyModel,RoleModel roleModel)
+        {
+            return base.BindToModels(enemyModel,roleModel);
+        }
+
+        public void RegisterAllFields()
+        {
+            RegisterField<string>("EnemyModel","bp_enemyInfo",(oldVal,newVal)=>
+            {
+                bp_enemyInfo.Value = newVal;
+            }); 
+            RegisterField<string>("RoleModel","bp_roleInfo",(oldVal,newVal)=>
+            {
+                bp_roleInfo.Value = newVal;
+            });
+        }
     }
 }

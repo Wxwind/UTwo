@@ -4,8 +4,8 @@ namespace MyMVVM.Sample.View2Model
 {
     public class CharacterModel:PureModel
     {
-        public BindablePropery<string> bp_text=new BindablePropery<string>();
-        public BindablePropery<int> bp_num = new BindablePropery<int>();
+        public ReactivePropery<string> bp_text=new ReactivePropery<string>();
+        public ReactivePropery<int> bp_num = new ReactivePropery<int>();
 
         public CharacterModel()
         {

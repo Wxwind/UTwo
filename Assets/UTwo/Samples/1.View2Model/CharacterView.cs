@@ -10,20 +10,20 @@ namespace MyMVVM.Sample.View2Model
         public TMP_InputField InputField;
 
         private CharacterModel testModel;
-        
+
         private void Start()
         {
             OnInit();
             testModel = new CharacterModel();
             BindingModel = testModel;
             LogHelper.LogInfo("Bind to a new CharacterModel");
-            testModel.Set("I'm Character",-1);
+            testModel.Set("I'm Character", -1);
         }
 
         public override void OnInit()
         {
             LogHelper.LogInfo($"init {GetType()}");
-            
+
             m_allPropertyBinder.RegisterField<string>("bp_text",
                 (oldValue, newValue) =>
                 {
