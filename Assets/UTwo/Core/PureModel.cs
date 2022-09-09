@@ -1,6 +1,8 @@
 namespace Wx.UTwo.Core
 {
-    //此model的数据为源数据
+    /// <summary>
+    /// 此model的数据为源数据
+    /// </summary>
     public abstract class PureModel:IModel
     {
         

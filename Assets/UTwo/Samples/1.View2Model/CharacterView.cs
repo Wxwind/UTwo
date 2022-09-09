@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using Wx.UTwo.Core;
 
-namespace MyMVVM.Sample
+namespace MyMVVM.Sample.View2Model
 {
     public class CharacterView : UView<CharacterModel>
     {

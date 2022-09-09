@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 namespace Wx.UTwo.Core
 {
-    //用于View和Model之间的多对多的绑定关系,此ViewModel包含了来自多个Model的不同属性
+    /// <summary>
+    /// 用于实现View和Model之间的多对多的绑定关系,此ViewModel包含了来自多个Model的不同属性
+    /// </summary>
     public abstract class ViewModel : IModel
     {
         private Dictionary<string, PureModel> m_models = new Dictionary<string, PureModel>();
@@ -16,14 +18,14 @@ namespace Wx.UTwo.Core
         {
             foreach (var m in models)
             {
-                m_models.Add(nameof(m), m);
+                m_models.Add(m.GetType().ToString(), m);
             }
         }
 
-        public bool RegisterField<TProperty>(string modelName, string modelFieldName,
+        public bool RegisterField<TProperty>(string modelTypeName, string modelFieldName,
             BindablePropery<TProperty>.OnValueChangedEventHandler OnValueChanged)
         {
-            if (m_models.TryGetValue(modelName, out var model))
+            if (m_models.TryGetValue(modelTypeName, out var model))
             {
                 var modelType = model.GetType();
                 var fieldInfo = modelType.GetField(modelFieldName);
@@ -44,7 +46,30 @@ namespace Wx.UTwo.Core
                     $"VM2PM：\"<color=#ff0000>{modelFieldName}</color>\":the type <color=#ff0000>{typeof(TProperty)}</color> you want to bind doesn't match type <color=#ff0000>{field.GetType()}</color> in Model \"<color=#ff0000>{modelType}</color>\",check your code please");
             }
 
-            throw new Exception($"Coundn't find model named \"{modelName}\",Are you missing import in ctor() or typo error?");
+            throw new Exception($"Coundn't find model named \"{modelTypeName}\",Are you missing import in ctor() or typo error?");
+        }
+
+        public bool BindToModels(params PureModel[] models)
+        {
+            if (m_models.Count!=0)
+            {
+                LogHelper.LogError("不要多次绑定Model，暂不支持对ViewModel对Model的重绑定");
+                return false;
+            }
+            foreach (var m in models)
+            {
+                bool isSucceed = true;
+                var typeName = m.GetType().ToString();
+                if (m_models.ContainsKey(typeName))
+                {
+                    LogHelper.LogWarning("暂不支持对同一类的多个Model实例的绑定");
+                    isSucceed = false;
+                }
+                else m_models.Add(typeName, m);
+                return isSucceed;
+            }
+
+            return true;
         }
     }
 }

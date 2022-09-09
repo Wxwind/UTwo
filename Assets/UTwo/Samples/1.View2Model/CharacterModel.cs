@@ -1,6 +1,6 @@
 ﻿using Wx.UTwo.Core;
 
-namespace MyMVVM.Sample
+namespace MyMVVM.Sample.View2Model
 {
     public class CharacterModel:PureModel
     {
