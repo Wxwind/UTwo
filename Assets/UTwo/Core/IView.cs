@@ -4,10 +4,10 @@
     {
         void OnInit();
 
+        void OnDestroySelf();
+        
         void OnOpen();
 
         void OnClose();
-
-        void OnDestroySelf();
     }
 }

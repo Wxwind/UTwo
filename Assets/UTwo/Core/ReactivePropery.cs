@@ -1,9 +1,12 @@
-﻿namespace Wx.UTwo.Core
+﻿using System;
+
+namespace Wx.UTwo.Core
 {
     /// <summary>
     /// 监听T并自动调用事件OnValueChanged
     /// </summary>
     /// <typeparam name="T">要监听的字段类型</typeparam>
+    [Serializable]
     public class ReactivePropery<T>
     {
         public delegate void OnValueChangedEventHandler(T oldValue, T newValue);

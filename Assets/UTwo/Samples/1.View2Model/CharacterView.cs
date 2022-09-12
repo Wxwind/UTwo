@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using Wx.UTwo.Core;
+using Wx.UTwo.UCore;
 
 namespace MyMVVM.Sample.View2Model
 {
@@ -24,16 +25,16 @@ namespace MyMVVM.Sample.View2Model
         {
             LogHelper.LogInfo($"init {GetType()}");
 
-            m_allPropertyBinder.RegisterField<string>("bp_text",
+            m_allPropertyBinder.RegisterField<string>("rp_text",
                 (oldValue, newValue) =>
                 {
                     MyString.text = newValue;
                     LogHelper.LogInfo("View 的 MyString 随Model发生改变");
                 });
-            m_allPropertyBinder.RegisterField<int>("bp_num",
+            m_allPropertyBinder.RegisterField<int>("rp_num",
                 (oldValue, newValue) =>
                 {
-                    LogHelper.LogInfo("Model 的 bp_num+1 ");
+                    LogHelper.LogInfo("Model 的 rp_num+1 ");
                     if (oldValue % 2 == 0)
                     {
                         Num.text = newValue.ToString();
@@ -61,12 +62,12 @@ namespace MyMVVM.Sample.View2Model
 
         public void OnBtnClick_NumPlusOne()
         {
-            testModel.bp_num.Value++;
+            testModel.rp_num.Value++;
         }
 
         public void OnBtnClick_SetText()
         {
-            testModel.bp_text.Value = InputField.text;
+            testModel.rp_text.Value = InputField.text;
         }
 
         #endregion

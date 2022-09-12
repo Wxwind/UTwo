@@ -1,7 +1,8 @@
 ﻿
 using UnityEngine;
+using Wx.UTwo.Core;
 
-namespace Wx.UTwo.Core
+namespace Wx.UTwo.UCore
 {
     //一个View只能对应一个Model
     public abstract class UView<T> : MonoBehaviour, IView where T : IModel
@@ -39,7 +40,7 @@ namespace Wx.UTwo.Core
         protected readonly PropertyBinder<T> m_allPropertyBinder = new PropertyBinder<T>();
 
         /// <summary>
-        /// 初始化View将其属性绑定到Model(Type)上
+        /// 第一次初始化View将其属性绑定到Model(Type)上
         /// </summary>
         public abstract void OnInit();
         public abstract void OnOpen();

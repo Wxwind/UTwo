@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Wx.UTwo.Core
 {
@@ -8,6 +9,10 @@ namespace Wx.UTwo.Core
     /// </summary>
     public abstract class ViewModel : IModel
     {
+        /// <summary>
+        ///<para>Key:typeof(Model).fullname/tostring()</para>> 
+        ///<para>Value:model instance</para>> 
+        /// </summary>
         private Dictionary<string, PureModel> m_models = new Dictionary<string, PureModel>();
 
         public ViewModel()
@@ -53,9 +58,9 @@ namespace Wx.UTwo.Core
                 LogHelper.LogError("不要多次绑定Model，暂不支持对ViewModel对Model的重绑定");
                 return false;
             }
+            bool isSucceed = true;
             foreach (var m in models)
             {
-                bool isSucceed = true;
                 var typeName = m.GetType().ToString();
                 if (m_models.ContainsKey(typeName))
                 {
@@ -63,10 +68,21 @@ namespace Wx.UTwo.Core
                     isSucceed = false;
                 }
                 else m_models.Add(typeName, m);
-                return isSucceed;
+            }
+            return isSucceed;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+            foreach (var item in m_models)
+            {
+                sb.Append($"{i}:  key:{item.Key} value:{item.Value}\n");
+                i++;
             }
 
-            return true;
+            return sb.ToString();
         }
     }
 }
